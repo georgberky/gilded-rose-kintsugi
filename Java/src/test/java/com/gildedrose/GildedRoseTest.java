@@ -72,6 +72,46 @@ public class GildedRoseTest {
 		assertThat(item.quality, is(getMaxQuality()));
 	}
 
+	@Test
+	public void backstagePasses_sellInLessThan11_increaseQualityBy2UpTo50() {
+		Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 10, 48);
+		GildedRose app = createApp(item);
+
+		app.updateQuality();
+
+		assertThat(item.quality, is(50));
+	}
+
+	@Test
+	public void backstagePasses_sellInLessThan11_doesNotIncreaseQualityBeyond50() {
+		Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 10, 49);
+		GildedRose app = createApp(item);
+
+		app.updateQuality();
+
+		assertThat(item.quality, is(50));
+	}
+
+	@Test
+	public void backstagePasses_sellInLessThan6_increasesQualityBy3UpTo50_() {
+		Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 5, 47);
+		GildedRose app = createApp(item);
+
+		app.updateQuality();
+
+		assertThat(item.quality, is(50));
+	}
+
+	@Test
+	public void backstagePasses_sellInLessThan6_doesNotIncreaseQualityBeyond50() {
+		Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 5, 48);
+		GildedRose app = createApp(item);
+
+		app.updateQuality();
+
+		assertThat(item.quality, is(50));
+	}
+
 	private int anyNegativeSellingDate() {
 		return -1;
 	}
