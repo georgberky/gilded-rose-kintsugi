@@ -73,6 +73,15 @@ public class GildedRoseTest {
 	}
 
 	@Test
+	public void afterSellInDate_AgedBrie_increasesInQuality()
+			throws Exception {
+		Item item = new Item(getAgedBrie(), anySellingDate(), 48);
+		GildedRose app = createApp(item);
+		app.updateQuality();
+		assertThat(item.quality, is(50));
+	}
+
+	@Test
 	public void backstagePasses_sellInLessThan11_increaseQualityBy2UpTo50() {
 		Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 10, 48);
 		GildedRose app = createApp(item);
@@ -110,6 +119,16 @@ public class GildedRoseTest {
 		app.updateQuality();
 
 		assertThat(item.quality, is(50));
+	}
+
+	@Test
+	public void backstagePasses_haveQualityZero_whenSellInHasPassed() {
+		Item item = new Item("Backstage passes to a TAFKAL80ETC concert", -1, 50);
+		GildedRose app = createApp(item);
+
+		app.updateQuality();
+
+		assertThat(item.quality, is(0));
 	}
 
 	private int anyNegativeSellingDate() {
