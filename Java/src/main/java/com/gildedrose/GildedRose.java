@@ -1,10 +1,20 @@
 package com.gildedrose;
 
+import java.util.Arrays;
+
 class GildedRose {
-    Item[] items;
+
+    private final GildedItem[] gildedItems;
+    private final Item[] items;
 
     public GildedRose(Item[] items) {
         this.items = items;
+        this.gildedItems = Arrays.stream(items).map(GildedItem::new).toArray(GildedItem[]::new);
+    }
+
+    public GildedRose(GildedItem[] items) {
+        this.items = Arrays.stream(items).map(GildedItem::getItem).toArray(Item[]::new);
+        this.gildedItems = items;
     }
 
     public void updateQuality() {
