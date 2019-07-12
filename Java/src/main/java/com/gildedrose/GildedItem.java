@@ -11,4 +11,8 @@ public class GildedItem {
     Item getItem() {
         return item;
     }
+
+    public void decreaseQuality() {
+        item.quality--;
+    }
 }
