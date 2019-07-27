@@ -15,4 +15,8 @@ public class GildedItem {
     public void decreaseQuality() {
         item.quality--;
     }
+
+    public void increaseQuality() {
+        item.quality++;
+    }
 }

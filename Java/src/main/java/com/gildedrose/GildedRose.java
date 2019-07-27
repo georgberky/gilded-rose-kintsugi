@@ -9,11 +9,15 @@ class GildedRose {
 
     public GildedRose(Item[] items) {
         this.items = items;
-        this.gildedItems = Arrays.stream(items).map(GildedItem::new).toArray(GildedItem[]::new);
+        this.gildedItems = Arrays.stream(items)
+                .map(GildedItem::new)
+                .toArray(GildedItem[]::new);
     }
 
     public GildedRose(GildedItem[] items) {
-        this.items = Arrays.stream(items).map(GildedItem::getItem).toArray(Item[]::new);
+        this.items = Arrays.stream(items)
+                .map(GildedItem::getItem)
+                .toArray(Item[]::new);
         this.gildedItems = items;
     }
 
@@ -29,7 +33,7 @@ class GildedRose {
                 }
             } else {
                 if (items[i].quality < 50) {
-                    items[i].quality = items[i].quality + 1;
+                    gildedItems[i].increaseQuality();
 
                     if (items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
                         if (items[i].sellIn < 11) {
