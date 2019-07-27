@@ -13,7 +13,7 @@ public class GildedItem {
     }
 
     public void decreaseSellIn() {
-        item.sellIn = item.sellIn - 1;
+        item.sellIn--;
     }
 
     public void decreaseQuality() {
