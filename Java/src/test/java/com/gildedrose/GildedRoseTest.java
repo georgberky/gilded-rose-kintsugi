@@ -132,6 +132,16 @@ public class GildedRoseTest {
         assertThat(item.quality, is(8));
     }
 
+    @Test
+    public void conjuredItem_qualityZero_doesNotDegradeFurther() {
+        Item item = new Item("Conjured", notSellinDatePassed(), 0);
+
+        GildedRose app = createApp(item);
+        app.updateConjured(item);
+
+        assertThat(item.quality, is(0));
+    }
+
     private void whenOneDayPasses(Item item) {
         GildedRose app = createApp(item);
         app.updateQuality();

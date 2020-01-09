@@ -65,6 +65,6 @@ class GildedRose {
     }
 
     void updateConjured(Item item) {
-        item.quality -= 2;
+        item.quality = Math.max(0, item.quality - 2);
     }
 }
