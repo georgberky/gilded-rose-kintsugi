@@ -53,7 +53,7 @@ public class GildedRoseTest {
 
     @Test
     public void whenDayPasses_normalItemWithNegativeSellDate_shouldDecreaseQualityeByTwo() {
-        Item item = new Item(anyName(), anyNegativeSellingDate(), anyQuality());
+        Item item = new Item(anyName(), sellInDatePassed(), anyQuality());
 
         whenOneDayPasses(item);
 
@@ -133,8 +133,28 @@ public class GildedRoseTest {
     }
 
     @Test
-    public void conjuredItem_qualityZero_doesNotDegradeFurther() {
+    public void conjuredItem_sellInDatePassed_degradesQualityByFour() {
+        Item item = new Item("Conjured", sellInDatePassed(), 10);
+
+        GildedRose app = createApp(item);
+        app.updateConjured(item);
+
+        assertThat(item.quality, is(6));
+    }
+
+    @Test
+    public void conjuredItem_qualityZeroSellInDateNotPassed_doesNotDegradeFurther() {
         Item item = new Item("Conjured", notSellinDatePassed(), 0);
+
+        GildedRose app = createApp(item);
+        app.updateConjured(item);
+
+        assertThat(item.quality, is(0));
+    }
+
+    @Test
+    public void conjuredItem_qualityZeroAndSellInPassed_doesNotDegradeFurther() {
+        Item item = new Item("Conjured", sellInDatePassed(), 0);
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
@@ -147,7 +167,7 @@ public class GildedRoseTest {
         app.updateQuality();
     }
 
-    private int anyNegativeSellingDate() {
+    private int sellInDatePassed() {
         return -1;
     }
 
