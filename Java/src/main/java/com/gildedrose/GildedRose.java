@@ -67,5 +67,7 @@ class GildedRose {
     void updateConjured(Item item) {
         int degeneration = item.sellIn >= 0 ? 2 : 4;
         item.quality = Math.max(0, item.quality - degeneration);
+
+        item.sellIn--;
     }
 }

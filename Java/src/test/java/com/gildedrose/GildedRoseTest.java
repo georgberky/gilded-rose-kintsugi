@@ -162,6 +162,26 @@ public class GildedRoseTest {
         assertThat(item.quality, is(0));
     }
 
+    @Test
+    public void conjuredItem_decreasesSellInDateByOne_perDay() {
+        Item item = new Item("Conjured", 10, anyQuality());
+
+        GildedRose app = createApp(item);
+        app.updateConjured(item);
+
+        assertThat(item.sellIn, is(9));
+    }
+
+    @Test
+    public void conjuredItem_decreasesSellInDateBelowZero() {
+        Item item = new Item("Conjured", 0, anyQuality());
+
+        GildedRose app = createApp(item);
+        app.updateConjured(item);
+
+        assertThat(item.sellIn, is(-1));
+    }
+
     private void whenOneDayPasses(Item item) {
         GildedRose app = createApp(item);
         app.updateQuality();
