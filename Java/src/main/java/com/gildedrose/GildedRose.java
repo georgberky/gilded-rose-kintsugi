@@ -11,9 +11,7 @@ class GildedRose {
         for (int i = 0; i < items.length; i++) {
             Item itemToUpdate = items[i];
             if (itemToUpdate.name.startsWith("Conjured ")) {
-                //updateConjured(itemToUpdate);
-                updateRegularItem(itemToUpdate);
-                updateRegularItem(itemToUpdate);
+                updateConjured(itemToUpdate);
             } else {
                 updateRegularItem(itemToUpdate);
             }
