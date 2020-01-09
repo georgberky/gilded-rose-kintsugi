@@ -124,7 +124,7 @@ public class GildedRoseTest {
 
     @Test
     public void conjuredItem_sellInDateNotPassed_degradesQualityByTwo() {
-        Item item = new Item("Conjured", notSellinDatePassed(), 10);
+        Item item = new Item("Conjured Regular Item", notSellinDatePassed(), 10);
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
@@ -134,7 +134,7 @@ public class GildedRoseTest {
 
     @Test
     public void conjuredItem_sellInDatePassed_degradesQualityByFour() {
-        Item item = new Item("Conjured", sellInDatePassed(), 10);
+        Item item = new Item("Conjured Regular Item", sellInDatePassed(), 10);
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
@@ -144,7 +144,7 @@ public class GildedRoseTest {
 
     @Test
     public void conjuredItem_qualityZeroSellInDateNotPassed_doesNotDegradeFurther() {
-        Item item = new Item("Conjured", notSellinDatePassed(), 0);
+        Item item = new Item("Conjured Regular Item", notSellinDatePassed(), 0);
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
@@ -154,7 +154,7 @@ public class GildedRoseTest {
 
     @Test
     public void conjuredItem_qualityZeroAndSellInPassed_doesNotDegradeFurther() {
-        Item item = new Item("Conjured", sellInDatePassed(), 0);
+        Item item = new Item("Conjured Regular Item", sellInDatePassed(), 0);
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
@@ -164,7 +164,7 @@ public class GildedRoseTest {
 
     @Test
     public void conjuredItem_decreasesSellInDateByOne_perDay() {
-        Item item = new Item("Conjured", 10, anyQuality());
+        Item item = new Item("Conjured Regular Item", 10, anyQuality());
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
@@ -174,7 +174,7 @@ public class GildedRoseTest {
 
     @Test
     public void conjuredItem_decreasesSellInDateBelowZero() {
-        Item item = new Item("Conjured", 0, anyQuality());
+        Item item = new Item("Conjured Regular Item", 0, anyQuality());
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
