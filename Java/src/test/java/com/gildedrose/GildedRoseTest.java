@@ -1,81 +1,85 @@
 package com.gildedrose;
 
-import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GildedRoseTest {
 
     @Test
     public void whenDayPasses_itemAgedBrie_shouldIncreaseQualityByOne() {
-        Item item = new Item(getAgedBrie(), notSellinDatePassed(), 10);
+        Item item = new Item("Aged Brie", notPastSellInDate(), 10);
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(11));
+        assertThat(item.quality).isEqualTo(11);
     }
 
 
     @Test
     public void whenDayPasses_normalItem_shouldDecreaseQualityByOne() {
-        Item item = new Item(anyName(), notSellinDatePassed(), 10);
+        Item item = new Item(anyRegularItemName(), notPastSellInDate(), 10);
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(9));
+        assertThat(item.quality).isEqualTo(9);
     }
 
     @Test
     public void whenDayPasses_normalItem_shouldDecreaseDaysLeftByOne() {
-        Item item = new Item(anyName(), notSellinDatePassed(), 10);
+        Item item = new Item(anyRegularItemName(), notPastSellInDate(), 10);
 
         whenOneDayPasses(item);
 
-        assertThat(item.sellIn, is(notSellinDatePassed() - 1));
+        assertThat(item.sellIn).isEqualTo(notPastSellInDate() - 1);
     }
 
     @Test
     public void whenDayPasses_itemSulfuras__shouldNotChangeQuality() {
-        Item item = new Item("Sulfuras, Hand of Ragnaros", notSellinDatePassed(), anyQuality());
+        int initialQuality = anyQuality();
+        Item item = new Item("Sulfuras, Hand of Ragnaros", notPastSellInDate(), initialQuality);
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(anyQuality()));
+        assertThat(item.quality).isEqualTo(initialQuality);
     }
 
     @Test
     public void whenDayPasses_normalItemWithZeroQuality_shouldNotDecreaseQuality() {
-        Item item = new Item(anyName(), anySellingDate(), zeroQuality());
+        Item item = new Item(anyRegularItemName(), anySellInDate(), zeroQuality());
+
         whenOneDayPasses(item);
-        assertThat(item.quality, is(zeroQuality()));
+
+        assertThat(item.quality).isEqualTo(zeroQuality());
     }
 
     @Test
     public void whenDayPasses_normalItemWithNegativeSellDate_shouldDecreaseQualityeByTwo() {
-        Item item = new Item(anyName(), sellInDatePassed(), anyQuality());
+        int initialQuality = anyQuality();
+        Item item = new Item(anyRegularItemName(), pastSellInDate(), initialQuality);
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(anyQuality() - 2));
+        assertThat(item.quality).isEqualTo(initialQuality - 2);
     }
 
     @Test
     public void whenDayPasses_itemAgedBrieWithQualityFifty_shouldNotIncreaseQuality() {
-        Item item = new Item(getAgedBrie(), anySellingDate(), getMaxQuality());
+        Item item = new Item("Aged Brie", anySellInDate(), maxQuality());
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(getMaxQuality()));
+        assertThat(item.quality).isEqualTo(maxQuality());
     }
 
     @Test
     public void afterSellInDate_AgedBrie_increasesInQuality() {
-        Item item = new Item(getAgedBrie(), anySellingDate(), 48);
+        Item item = new Item("Aged Brie", anySellInDate(), 48);
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(50));
+        assertThat(item.quality).isEqualTo(50);
     }
 
     @Test
@@ -84,7 +88,7 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(50));
+        assertThat(item.quality).isEqualTo(50);
     }
 
     @Test
@@ -93,7 +97,7 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(50));
+        assertThat(item.quality).isEqualTo(50);
     }
 
     @Test
@@ -102,15 +106,16 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(50));
+        assertThat(item.quality).isEqualTo(50);
     }
 
     @Test
     public void backstagePasses_sellInLessThan6_doesNotIncreaseQualityBeyond50() {
         Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 5, 48);
+
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(50));
+        assertThat(item.quality).isEqualTo(50);
     }
 
     @Test
@@ -119,47 +124,47 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(0));
+        assertThat(item.quality).isZero();
     }
 
     @Test
     public void conjuredItem_sellInDateNotPassed_degradesQualityByTwo() {
-        Item item = new Item("Conjured Regular Item", notSellinDatePassed(), 10);
+        Item item = new Item("Conjured Regular Item", notPastSellInDate(), 10);
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
 
-        assertThat(item.quality, is(8));
+        assertThat(item.quality).isEqualTo(8);
     }
 
     @Test
     public void conjuredItem_sellInDatePassed_degradesQualityByFour() {
-        Item item = new Item("Conjured Regular Item", sellInDatePassed(), 10);
+        Item item = new Item("Conjured Regular Item", pastSellInDate(), 10);
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
 
-        assertThat(item.quality, is(6));
+        assertThat(item.quality).isEqualTo(6);
     }
 
     @Test
     public void conjuredItem_qualityZeroSellInDateNotPassed_doesNotDegradeFurther() {
-        Item item = new Item("Conjured Regular Item", notSellinDatePassed(), 0);
+        Item item = new Item("Conjured Regular Item", notPastSellInDate(), 0);
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
 
-        assertThat(item.quality, is(0));
+        assertThat(item.quality).isZero();
     }
 
     @Test
     public void conjuredItem_qualityZeroAndSellInPassed_doesNotDegradeFurther() {
-        Item item = new Item("Conjured Regular Item", sellInDatePassed(), 0);
+        Item item = new Item("Conjured Regular Item", pastSellInDate(), 0);
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
 
-        assertThat(item.quality, is(0));
+        assertThat(item.quality).isZero();
     }
 
     @Test
@@ -169,7 +174,7 @@ public class GildedRoseTest {
         GildedRose app = createApp(item);
         app.updateConjured(item);
 
-        assertThat(item.sellIn, is(9));
+        assertThat(item.sellIn).isEqualTo(9);
     }
 
     @Test
@@ -179,34 +184,38 @@ public class GildedRoseTest {
         GildedRose app = createApp(item);
         app.updateConjured(item);
 
-        assertThat(item.sellIn, is(-1));
+        assertThat(item.sellIn).isEqualTo(-1);
     }
 
     private void whenOneDayPasses(Item item) {
         GildedRose app = createApp(item);
+
         app.updateQuality();
     }
 
-    private int sellInDatePassed() {
-        return -1;
-    }
 
+    private int maxQuality() {
+        return 50;
+    }
 
     private int anyQuality() {
         return 10;
-    }
-
-
-    private int getMaxQuality() {
-        return 50;
     }
 
     private int zeroQuality() {
         return 0;
     }
 
-    private int anySellingDate() {
+    private int anySellInDate() {
         return 0;
+    }
+
+    private int notPastSellInDate() {
+        return 3;
+    }
+
+    private int pastSellInDate() {
+        return -1;
     }
 
     private GildedRose createApp(Item item) {
@@ -215,15 +224,7 @@ public class GildedRoseTest {
         return app;
     }
 
-    private String getAgedBrie() {
-        return "Aged Brie";
-    }
-
-    private int notSellinDatePassed() {
-        return 3;
-    }
-
-    private String anyName() {
-        return "foo";
+    private String anyRegularItemName() {
+        return "regular item";
     }
 }
