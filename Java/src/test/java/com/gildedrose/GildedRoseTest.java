@@ -1,9 +1,9 @@
 package com.gildedrose;
 
-import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GildedRoseTest {
 
@@ -13,7 +13,7 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(11));
+        assertThat(item.quality).isEqualTo(11);
     }
 
 
@@ -23,7 +23,7 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(9));
+        assertThat(item.quality).isEqualTo(9);
     }
 
     @Test
@@ -32,16 +32,17 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.sellIn, is(notPastSellInDate() - 1));
+        assertThat(item.sellIn).isEqualTo(notPastSellInDate() - 1);
     }
 
     @Test
     public void whenDayPasses_itemSulfuras__shouldNotChangeQuality() {
-        Item item = new Item("Sulfuras, Hand of Ragnaros", notPastSellInDate(), anyQuality());
+        int initialQuality = anyQuality();
+        Item item = new Item("Sulfuras, Hand of Ragnaros", notPastSellInDate(), initialQuality);
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(anyQuality()));
+        assertThat(item.quality).isEqualTo(initialQuality);
     }
 
     @Test
@@ -50,16 +51,17 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(zeroQuality()));
+        assertThat(item.quality).isEqualTo(zeroQuality());
     }
 
     @Test
     public void whenDayPasses_normalItemWithNegativeSellDate_shouldDecreaseQualityeByTwo() {
-        Item item = new Item(anyRegularItemName(), pastSellInDate(), anyQuality());
+        int initialQuality = anyQuality();
+        Item item = new Item(anyRegularItemName(), pastSellInDate(), initialQuality);
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(anyQuality() - 2));
+        assertThat(item.quality).isEqualTo(initialQuality - 2);
     }
 
     @Test
@@ -68,7 +70,7 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(maxQuality()));
+        assertThat(item.quality).isEqualTo(maxQuality());
     }
 
     @Test
@@ -77,7 +79,7 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(50));
+        assertThat(item.quality).isEqualTo(50);
     }
 
     @Test
@@ -86,7 +88,7 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(50));
+        assertThat(item.quality).isEqualTo(50);
     }
 
     @Test
@@ -95,7 +97,7 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(50));
+        assertThat(item.quality).isEqualTo(50);
     }
 
     @Test
@@ -104,7 +106,7 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(50));
+        assertThat(item.quality).isEqualTo(50);
     }
 
     @Test
@@ -113,7 +115,7 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(50));
+        assertThat(item.quality).isEqualTo(50);
     }
 
     @Test
@@ -122,7 +124,7 @@ public class GildedRoseTest {
 
         whenOneDayPasses(item);
 
-        assertThat(item.quality, is(0));
+        assertThat(item.quality).isZero();
     }
 
     private void whenOneDayPasses(Item item) {
