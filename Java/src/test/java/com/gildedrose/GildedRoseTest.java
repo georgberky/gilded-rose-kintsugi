@@ -181,29 +181,32 @@ public class GildedRoseTest {
         assertThat(item.quality).isZero();
     }
 
-    @Test
-    public void conjuredItem_sellInDateNotPassed_degradesQualityByTwo() {
-        Item item = new Item("Conjured Regular Item", notPastSellInDate(), 10);
+    @ParameterizedTest
+    @ValueSource(ints = {10, 9, 8})
+    public void conjuredItem_sellInDateNotPassed_degradesQualityByTwo(int initialQuality) {
+        Item item = new Item("Conjured Regular Item", notPastSellInDate(), initialQuality);
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
 
-        assertThat(item.quality).isEqualTo(8);
+        assertThat(item.quality).isEqualTo(initialQuality - 2);
     }
 
-    @Test
-    public void conjuredItem_sellInDatePassed_degradesQualityByFour() {
-        Item item = new Item("Conjured Regular Item", pastSellInDate(), 10);
+    @ParameterizedTest
+    @ValueSource(ints = {10, 9, 8})
+    public void conjuredItem_sellInDatePassed_degradesQualityByFour(int initialQuality) {
+        Item item = new Item("Conjured Regular Item", pastSellInDate(), initialQuality);
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
 
-        assertThat(item.quality).isEqualTo(6);
+        assertThat(item.quality).isEqualTo(initialQuality - 4);
     }
 
-    @Test
-    public void conjuredItem_qualityZeroSellInDateNotPassed_doesNotDegradeFurther() {
-        Item item = new Item("Conjured Regular Item", notPastSellInDate(), 0);
+    @ParameterizedTest
+    @ValueSource(ints = {1, 0})
+    public void conjuredItem_sellInDateNotPassed_doesNotDegradeBelowZero(int initialQuality) {
+        Item item = new Item("Conjured Regular Item", notPastSellInDate(), initialQuality);
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
@@ -211,9 +214,10 @@ public class GildedRoseTest {
         assertThat(item.quality).isZero();
     }
 
-    @Test
-    public void conjuredItem_qualityZeroAndSellInPassed_doesNotDegradeFurther() {
-        Item item = new Item("Conjured Regular Item", pastSellInDate(), 0);
+    @ParameterizedTest
+    @ValueSource(ints = {3, 2, 1, 0})
+    public void conjuredItem_pastSellInDate_doesNotDegradeBelowZero(int initialQuality) {
+        Item item = new Item("Conjured Regular Item", pastSellInDate(), initialQuality);
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
@@ -221,24 +225,15 @@ public class GildedRoseTest {
         assertThat(item.quality).isZero();
     }
 
-    @Test
-    public void conjuredItem_decreasesSellInDateByOne_perDay() {
-        Item item = new Item("Conjured Regular Item", 10, anyQuality());
+    @ParameterizedTest
+    @ValueSource(ints = {2, 1, 0, -1, -2})
+    public void conjuredItem_decreasesSellInDateByOne_perDay(int initialSellInDays) {
+        Item item = new Item("Conjured Regular Item", initialSellInDays, anyQuality());
 
         GildedRose app = createApp(item);
         app.updateConjured(item);
 
-        assertThat(item.sellIn).isEqualTo(9);
-    }
-
-    @Test
-    public void conjuredItem_decreasesSellInDateBelowZero() {
-        Item item = new Item("Conjured Regular Item", 0, anyQuality());
-
-        GildedRose app = createApp(item);
-        app.updateConjured(item);
-
-        assertThat(item.sellIn).isEqualTo(-1);
+        assertThat(item.sellIn).isEqualTo(initialSellInDays - 1);
     }
 
     private void whenOneDayPasses(Item item) {

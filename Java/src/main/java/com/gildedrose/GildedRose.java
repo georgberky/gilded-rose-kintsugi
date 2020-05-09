@@ -13,12 +13,13 @@ class GildedRose {
             if (itemToUpdate.name.startsWith("Conjured ")) {
                 updateConjured(itemToUpdate);
             } else {
-                updateRegularItem(itemToUpdate);
+                //here be dragons
+                updateOtherItem(itemToUpdate);
             }
         }
     }
 
-    private void updateRegularItem(Item item) {
+    private void updateOtherItem(Item item) {
         if (!item.name.equals("Aged Brie") &&
             !item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
 
@@ -51,7 +52,7 @@ class GildedRose {
             item.sellIn = item.sellIn - 1;
         }
 
-        if (item.sellIn < 0) {
+        if (pastSellInDate(item)) {
             if (!item.name.equals("Aged Brie")) {
                 if (!item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
                     if (item.quality > 0) {
@@ -71,9 +72,18 @@ class GildedRose {
     }
 
     void updateConjured(Item item) {
-        int degeneration = item.sellIn >= 0 ? 2 : 4;
+        int degeneration = 2;
+
+        if(pastSellInDate(item)) {
+            degeneration *= 2;
+        }
+
         item.quality = Math.max(0, item.quality - degeneration);
 
         item.sellIn--;
+    }
+
+    private boolean pastSellInDate(Item item) {
+        return item.sellIn < 0;
     }
 }
