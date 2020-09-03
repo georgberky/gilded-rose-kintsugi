@@ -15,12 +15,12 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-public class GildedRoseTest {
+class GildedRoseTest {
 
     @ParameterizedTest(name = "initial quality: {0}")
     @ValueSource(ints = { 10, 11, 12 })
     @DisplayName("Aged Brie: increases quality")
-    public void whenDayPasses_itemAgedBrie_shouldIncreaseQualityByOne(int initialQuality) {
+    void whenDayPasses_itemAgedBrie_shouldIncreaseQualityByOne(int initialQuality) {
         Item item = new Item("Aged Brie", notPastSellInDate(), initialQuality);
 
         whenOneDayPasses(item);
@@ -32,7 +32,7 @@ public class GildedRoseTest {
     @ParameterizedTest(name = "initial quality: {0}")
     @ValueSource(ints = { 10, 11, 12 })
     @DisplayName("Regular Item: decreases quality by one")
-    public void whenDayPasses_normalItem_shouldDecreaseQualityByOne(int initialQuality) {
+    void whenDayPasses_normalItem_shouldDecreaseQualityByOne(int initialQuality) {
         Item item = new Item(anyRegularItemName(), notPastSellInDate(), initialQuality);
 
         whenOneDayPasses(item);
@@ -43,7 +43,7 @@ public class GildedRoseTest {
     @ParameterizedTest(name = "initial sell-in days: {0}")
     @ValueSource(ints = { 10, 11, 12 })
     @DisplayName("Regular Item: decreases sell-in days by one")
-    public void whenDayPasses_normalItem_shouldDecreaseSellInDateByOne(int initialSellInDate) {
+    void whenDayPasses_normalItem_shouldDecreaseSellInDateByOne(int initialSellInDate) {
         Item item = new Item(anyRegularItemName(), initialSellInDate, anyQuality());
 
         whenOneDayPasses(item);
@@ -54,7 +54,7 @@ public class GildedRoseTest {
     @ParameterizedTest(name = "initial quality: {0}")
     @ValueSource(ints = { 10, 11, 12 })
     @DisplayName("Sulfuras: does not change quality")
-    public void whenDayPasses_itemSulfuras__shouldNotChangeQuality(int initialQuality) {
+    void whenDayPasses_itemSulfuras__shouldNotChangeQuality(int initialQuality) {
         Item item = new Item("Sulfuras, Hand of Ragnaros", notPastSellInDate(), initialQuality);
 
         whenOneDayPasses(item);
@@ -64,7 +64,7 @@ public class GildedRoseTest {
 
     @Test
     @DisplayName("Regular item: does not decrease quality below zero")
-    public void whenDayPasses_normalItemWithZeroQuality_shouldNotDecreaseQuality() {
+    void whenDayPasses_normalItemWithZeroQuality_shouldNotDecreaseQuality() {
         Item item = new Item(anyRegularItemName(), anySellInDate(), zeroQuality());
 
         whenOneDayPasses(item);
@@ -75,7 +75,7 @@ public class GildedRoseTest {
     @ParameterizedTest(name = "initial quality: {0}")
     @ValueSource(ints = { 10, 11, 12 })
     @DisplayName("Regular item: past sell in date → decreases quality by two")
-    public void whenDayPasses_normalItemWithNegativeSellDate_shouldDecreaseQualityeByTwo(int initialQuality) {
+    void whenDayPasses_normalItemWithNegativeSellDate_shouldDecreaseQualityeByTwo(int initialQuality) {
         Item item = new Item(anyRegularItemName(), pastSellInDate(), initialQuality);
 
         whenOneDayPasses(item);
@@ -85,7 +85,7 @@ public class GildedRoseTest {
 
     @Test
     @DisplayName("Aged Brie: does not increase quality above maximum")
-    public void whenDayPasses_itemAgedBrieWithQualityFifty_shouldNotIncreaseQuality() {
+    void whenDayPasses_itemAgedBrieWithQualityFifty_shouldNotIncreaseQuality() {
         Item item = new Item("Aged Brie", anySellInDate(), maxQuality());
 
         whenOneDayPasses(item);
@@ -96,7 +96,7 @@ public class GildedRoseTest {
     @ParameterizedTest(name = "initial quality: {0}")
     @ValueSource(ints = { 46, 47, 48 })
     @DisplayName("Aged Brie: increases quality past sell-in date by two")
-    public void afterSellInDate_AgedBrie_increasesInQuality(int initialQuality) {
+    void afterSellInDate_AgedBrie_increasesInQuality(int initialQuality) {
         Item item = new Item("Aged Brie", pastSellInDate(), initialQuality);
 
         whenOneDayPasses(item);
@@ -107,7 +107,7 @@ public class GildedRoseTest {
     @ParameterizedTest(name = "initial sell-in days: {0}, initial quality: {1}")
     @MethodSource("backstagePassesDaysBetween10and5")
     @DisplayName("Backstage passes: sell-in days ⩽ 10 → increase quality by 2")
-    public void backstagePasses_sellInLessThan11_increaseQualityBy2UpTo50(int initialSellIn, int initialQuality) {
+    void backstagePasses_sellInLessThan11_increaseQualityBy2UpTo50(int initialSellIn, int initialQuality) {
         Item item = new Item("Backstage passes to a TAFKAL80ETC concert", initialSellIn, initialQuality);
 
         whenOneDayPasses(item);
@@ -129,7 +129,7 @@ public class GildedRoseTest {
 
     @Test
     @DisplayName("Backstage passes: sell-in days ⩽ 10 → do not increase quality above maximum")
-    public void backstagePasses_sellInLessThan11_doesNotIncreaseQualityBeyond50() {
+    void backstagePasses_sellInLessThan11_doesNotIncreaseQualityBeyond50() {
         Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 10, 49);
 
         whenOneDayPasses(item);
@@ -140,7 +140,7 @@ public class GildedRoseTest {
     @ParameterizedTest(name = "initial sell-in days: {0}, initial quality: {1}")
     @MethodSource("backstagePassesDaysBetween5And0")
     @DisplayName("Backstage passes: sell-in days ⩽ 5 → increase quality by 2")
-    public void backstagePasses_sellInLessThan6_increasesQualityBy3UpTo50_(int initialSellIn, int initialQuality) {
+    void backstagePasses_sellInLessThan6_increasesQualityBy3UpTo50_(int initialSellIn, int initialQuality) {
         Item item = new Item("Backstage passes to a TAFKAL80ETC concert", initialSellIn, initialQuality);
 
         whenOneDayPasses(item);
@@ -162,7 +162,7 @@ public class GildedRoseTest {
 
     @Test
     @DisplayName("Backstage passes: sell-in days ⩽ 5 → does not increase quality above maximum")
-    public void backstagePasses_sellInLessThan6_doesNotIncreaseQualityBeyond50() {
+    void backstagePasses_sellInLessThan6_doesNotIncreaseQualityBeyond50() {
         Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 5, 48);
 
         whenOneDayPasses(item);
@@ -173,7 +173,7 @@ public class GildedRoseTest {
     @ParameterizedTest(name = "initial sell-in days: {0}")
     @ValueSource(ints = { 0, -1, -2 })
     @DisplayName("Backstage passes: quality is zero after sell-in has passed")
-    public void backstagePasses_haveQualityZero_whenSellInHasPassed(int pastSellIn) {
+    void backstagePasses_haveQualityZero_whenSellInHasPassed(int pastSellIn) {
         Item item = new Item("Backstage passes to a TAFKAL80ETC concert", pastSellIn, 50);
 
         whenOneDayPasses(item);
