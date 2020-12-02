@@ -25,15 +25,13 @@ final class GildedRoseFixtures {
         return -1;
     }
 
+    public static void whenOneDayPasses(Item item) {
+        GildedRose app = createApp(item);
+        app.updateQuality();
+    }
+
     public static GildedRose createApp(Item item) {
         Item[] items = new Item[]{item};
         return new GildedRose(items);
     }
-
-    public static void whenOneDayPasses(Item item) {
-        GildedRose app = createApp(item);
-
-        app.updateQuality();
-    }
-
 }
